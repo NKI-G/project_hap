@@ -39,16 +39,14 @@ if debug:
         "localhost:8000",
         "127.0.0.1:8000",
         "127.0.0.1",
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
     ]
 else:
     print("Production mode enabled")
     origins = [
         "http://at.at",
     ]
-
-app.add_middleware(
-    TrustedHostMiddleware, allowed_hosts=["*"]
-)
 
 app.add_middleware(
     CORSMiddleware,
@@ -73,6 +71,7 @@ async def validate_ip(request: Request, call_next):
         data = {
             'message': f'IP {client_ip} is not allowed to access this resource.'
         }
+        print(data)
         return JSONResponse(status_code=status.HTTP_403_FORBIDDEN, content=data)
 
     # Proceed if IP is allowed
